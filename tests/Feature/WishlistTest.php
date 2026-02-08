@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Product;
+use App\Actions\Wishlist\AddToWishlist;
 use App\Models\Wishlist;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -10,6 +10,8 @@ use Tests\TestCase;
 class WishlistTest extends TestCase
 {
     use RefreshDatabase;
+
+    private AddToWishlist $action;
 
     // ========================================
     // VIEW WISHLIST TESTS
@@ -19,7 +21,7 @@ class WishlistTest extends TestCase
     {
         $user = $this->createUser();
         $product = $this->createProduct();
-        Wishlist::create([
+        $wishlist = $this->action->execute([
             'user_id' => $user->id,
             'product_id' => $product->id,
         ]);
@@ -48,8 +50,8 @@ class WishlistTest extends TestCase
         $product1 = $this->createProduct();
         $product2 = $this->createProduct();
 
-        Wishlist::create(['user_id' => $userA->id, 'product_id' => $product1->id]);
-        Wishlist::create(['user_id' => $userB->id, 'product_id' => $product2->id]);
+        $this->action->execute(['user_id' => $userA->id, 'product_id' => $product1->id]);
+        $this->action->execute(['user_id' => $userB->id, 'product_id' => $product2->id]);
 
         $response = $this->actingAs($userA)
             ->getJson('/api/wishlist');
@@ -170,7 +172,7 @@ class WishlistTest extends TestCase
         $userA = $this->createUser(['email' => 'usera@example.com']);
         $userB = $this->createUser(['email' => 'userb@example.com']);
         $product = $this->createProduct();
-        $wishlist = Wishlist::create([
+        $wishlist = $this->action->execute([
             'user_id' => $userA->id,
             'product_id' => $product->id,
         ]);
@@ -218,8 +220,8 @@ class WishlistTest extends TestCase
         $user2 = $this->createUser(['email' => 'user2@example.com']);
         $product = $this->createProduct();
 
-        Wishlist::create(['user_id' => $user1->id, 'product_id' => $product->id]);
-        Wishlist::create(['user_id' => $user2->id, 'product_id' => $product->id]);
+        $this->action->execute(['user_id' => $user1->id, 'product_id' => $product->id]);
+        $this->action->execute(['user_id' => $user2->id, 'product_id' => $product->id]);
 
         $this->assertDatabaseCount('wishlists', 2);
 
@@ -234,13 +236,19 @@ class WishlistTest extends TestCase
         $product1 = $this->createProduct();
         $product2 = $this->createProduct();
 
-        Wishlist::create(['user_id' => $user->id, 'product_id' => $product1->id]);
-        Wishlist::create(['user_id' => $user->id, 'product_id' => $product2->id]);
+        $this->action->execute(['user_id' => $user->id, 'product_id' => $product1->id]);
+        $this->action->execute(['user_id' => $user->id, 'product_id' => $product2->id]);
 
         $this->assertDatabaseCount('wishlists', 2);
 
         $user->delete();
 
         $this->assertDatabaseCount('wishlists', 0);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->action = app(AddToWishlist::class);
     }
 }

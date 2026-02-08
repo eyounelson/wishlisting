@@ -37,7 +37,7 @@ class AddToWishlistTest extends TestCase
         $user = User::factory()->create();
         $product = Product::factory()->create();
 
-        $existing = Wishlist::create([
+        $existing = $this->action->execute([
             'user_id' => $user->id,
             'product_id' => $product->id,
         ]);
