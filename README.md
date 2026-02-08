@@ -268,6 +268,7 @@ Authorization: Bearer {your_token}
             "name": "Glidewell BruxZir Crown",
             "description": "Full-contour zirconia crown with exceptional strength and aesthetics",
             "price": "450.00",
+            "in_wishlist": true,
             "created_at": "2026-02-05T14:20:00.000000Z",
             "updated_at": "2026-02-05T14:20:00.000000Z"
         },
@@ -276,6 +277,7 @@ Authorization: Bearer {your_token}
             "name": "Ivoclar IPS e.max Veneer",
             "description": "Lithium disilicate ceramic veneer for superior esthetics",
             "price": "320.00",
+            "in_wishlist": true,
             "created_at": "2026-02-05T14:20:00.000000Z",
             "updated_at": "2026-02-05T14:20:00.000000Z"
         },
@@ -284,6 +286,7 @@ Authorization: Bearer {your_token}
             "name": "3M Filtek Supreme Composite",
             "description": "Universal nano-hybrid composite restorative material",
             "price": "85.50",
+            "in_wishlist": true,
             "created_at": "2026-02-05T14:20:00.000000Z",
             "updated_at": "2026-02-05T14:20:00.000000Z"
         }

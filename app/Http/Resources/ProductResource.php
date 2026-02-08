@@ -19,6 +19,7 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'price' => $this->price,
             'description' => $this->description,
+            'in_wishlist' => $this->whenExistsLoaded('wishlists'),
             'created_at' => $this->created_at,
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,6 +23,7 @@ class Product extends Model
     {
         return [
             'price' => 'decimal:2',
+            'wishlists_exists' => 'boolean',
         ];
     }
 
@@ -33,5 +35,12 @@ class Product extends Model
     public function wishlistedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'wishlists');
+    }
+
+    public function scopeWithWishlistStatus(Builder $builder, User $user): Builder
+    {
+        return $builder->withExists([
+            'wishlists' => fn ($query) => $query->where('user_id', $user->id),
+        ]);
     }
 }

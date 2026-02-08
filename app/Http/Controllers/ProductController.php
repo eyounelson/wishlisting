@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(): JsonResource
     {
-        $products = Product::paginate(15);
+        $products = Product::withWishlistStatus(Auth::user())->paginate(15);
 
         return ProductResource::collection($products);
     }
